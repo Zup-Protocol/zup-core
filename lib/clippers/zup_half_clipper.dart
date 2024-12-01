@@ -25,8 +25,10 @@ class ZupHalfClipper extends CustomClipper<Path> {
   @override
   getClip(Size size) {
     final path = Path();
-    if (side.isRight)
+    if (side.isRight) {
       return path..addRect(Rect.fromLTRB(0, 0, size.width / 2, size.height));
+    }
+
     return path
       ..addRect(Rect.fromLTRB(size.width / 2, 0, size.width, size.height));
   }

@@ -15,7 +15,7 @@ class ZupHolder {
   /// The function returned by [hold] will return the same value as [action].
   Future<T> hold<T>(Future<T> Function() action) async {
     while (_isHolding) {
-      await Future.delayed(const Duration(milliseconds: 100));
+      await Future.delayed(const Duration(microseconds: 1));
     }
 
     _isHolding = true;
