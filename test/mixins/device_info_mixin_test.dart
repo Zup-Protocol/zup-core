@@ -12,6 +12,10 @@ void main() {
     sut = _DeviceInfoMixinTestWrapper();
   });
 
+  tearDown(() {
+    debugDefaultTargetPlatformOverride = null;
+  });
+
   testWidgets(
       "`isMobileSize` should return true if the screen width is less than 600px",
       (tester) async {
