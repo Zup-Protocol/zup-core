@@ -36,32 +36,28 @@ class ZupSingletonCache {
     Duration? expiration,
     bool ignoreCache = false,
   }) async {
-    return _holder.hold(
-      () async {
-        Future<T> execution() async {
-          final result = await action();
+    Future<T> execution() async {
+      final result = await action();
 
-          _cache[key] = _ZupSingletonCacherEntry(result, clock.now().toUtc());
+      _cache[key] = _ZupSingletonCacherEntry(result, clock.now().toUtc());
 
-          return result;
-        }
+      return result;
+    }
 
-        if (ignoreCache) return await execution();
+    if (ignoreCache) return await execution();
 
-        final cachedValue = _cache[key];
+    final cachedValue = _cache[key];
 
-        if (cachedValue == null) return await execution();
+    if (cachedValue == null) return await execution();
 
-        if (expiration != null &&
-            cachedValue.time.isBefore(
-              clock.now().toUtc().subtract(expiration),
-            )) {
-          return execution();
-        }
+    if (expiration != null &&
+        cachedValue.time.isBefore(
+          clock.now().toUtc().subtract(expiration),
+        )) {
+      return await execution();
+    }
 
-        return cachedValue.value;
-      },
-    );
+    return cachedValue.value;
   }
 
   /// Clears all stored cache entries.

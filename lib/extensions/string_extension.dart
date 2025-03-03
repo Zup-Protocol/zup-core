@@ -4,4 +4,7 @@ extension StringExtension on String {
   String get toHex {
     return codeUnits.map((e) => e.toRadixString(16).padLeft(2, '0')).join();
   }
+
+  /// Check if the string is equal to [other] as case insensitive
+  bool lowercasedEquals(String other) => toLowerCase() == other.toLowerCase();
 }
