@@ -1,5 +1,4 @@
 import 'package:clock/clock.dart';
-import 'package:zup_core/zup_holder.dart';
 
 class _ZupSingletonCacherEntry<T> {
   _ZupSingletonCacherEntry(this.value, this.time);
@@ -9,12 +8,11 @@ class _ZupSingletonCacherEntry<T> {
 }
 
 class ZupSingletonCache {
-  ZupSingletonCache._(this._holder);
+  ZupSingletonCache._();
 
   /// access the singleton instance of [ZupSingletonCache]
-  static final shared = ZupSingletonCache._(ZupHolder());
+  static final shared = ZupSingletonCache._();
 
-  final ZupHolder _holder;
   final Map<String, _ZupSingletonCacherEntry> _cache = {};
 
   /// Executes an operation whose return value will be cached in memory for the duration of the app's runtime.
