@@ -1,6 +1,7 @@
 class ZupHolder {
-  /// Create an instance of [ZupHolder] which can be used to hold operations
-  /// while one operation is already in progress.
+  /// Holds an operation until the previous one is finished.
+  ///
+  /// Useful for preventing multiple operations from running at the same time.
   ZupHolder();
 
   bool _isHolding = false;
@@ -19,9 +20,7 @@ class ZupHolder {
     }
 
     _isHolding = true;
-
     final result = await action();
-
     _isHolding = false;
 
     return result;
