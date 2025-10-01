@@ -7,4 +7,17 @@ extension StringExtension on String {
 
   /// Check if the string is equal to [other] as case insensitive
   bool lowercasedEquals(String other) => toLowerCase() == other.toLowerCase();
+
+  /// Clamp the string to [maxLength] and show an ellipsis if the string is longer
+  ///
+  /// Returns the clamped string, optionally remove the ellipsis by passing false
+  /// to [showEllipsis]
+  String clampMax(int maxLength, {bool showEllipsis = true}) {
+    if (trim().length > maxLength) {
+      final clamped = substring(0, maxLength);
+      return showEllipsis ? "$clamped..." : clamped;
+    }
+
+    return this;
+  }
 }
