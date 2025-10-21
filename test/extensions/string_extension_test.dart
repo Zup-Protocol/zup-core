@@ -36,7 +36,7 @@ void main() {
     """When passing a string that its lenght is longer than the max length to `clampMax`
     it should return the same string but clamped, with an ellipsis at the end""",
     () {
-      expect("test".clampMax(3), "tes...");
+      expect("test".clamped(3), "tes...");
     },
   );
 
@@ -45,7 +45,7 @@ void main() {
     and setting false to add the ellipsis at the end, it should return the same string but clamped,
     without an ellipsis at the end""",
     () {
-      expect("test".clampMax(3, showEllipsis: false), "tes");
+      expect("test".clamped(3, showEllipsis: false), "tes");
     },
   );
 
@@ -53,7 +53,17 @@ void main() {
     """When passing a string that its lenght is not longer than the max length to `clampMax`
     it should return the same string, not clamped""",
     () {
-      expect("test".clampMax(4), "test");
+      expect("test".clamped(4), "test");
     },
+  );
+
+  test(
+    "When passing a positive number string to 'asSignedNumber' it should add a plus sign",
+    () => expect('123'.asSignedNumber, '+123'),
+  );
+
+  test(
+    "When passing a negative number string to 'asSignedNumber' it should keep the minus sign and not add a plus sign",
+    () => expect('-123'.asSignedNumber, '-123'),
   );
 }

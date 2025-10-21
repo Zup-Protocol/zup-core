@@ -12,12 +12,21 @@ extension StringExtension on String {
   ///
   /// Returns the clamped string, optionally remove the ellipsis by passing false
   /// to [showEllipsis]
-  String clampMax(int maxLength, {bool showEllipsis = true}) {
+  String clamped(int maxLength, {bool showEllipsis = true}) {
     if (trim().length > maxLength) {
       final clamped = substring(0, maxLength);
       return showEllipsis ? "$clamped..." : clamped;
     }
 
     return this;
+  }
+
+  /// Add plus sign to a string number if it's positive, keeps minus sign if it's negative
+  ///
+  /// E.g 123 -> +123 | -123 -> -123
+  String get asSignedNumber {
+    if (contains("-")) return this;
+
+    return "+$this";
   }
 }
