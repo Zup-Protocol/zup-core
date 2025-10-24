@@ -2,6 +2,9 @@ import 'package:clock/clock.dart';
 import 'package:zup_core/zup_core.dart';
 
 extension DateTimeExtension on DateTime {
+  /// Get how many milliseconds ago a passed date is as an [int].
+  int get millisecondsAgo => clock.now().difference(this).inMilliseconds;
+
   /// Get how many seconds ago a passed date is as a [int]
   ///
   /// Note: rounded down if not an integer, so 1500 milliseconds -> 1 second
@@ -25,14 +28,24 @@ extension DateTimeExtension on DateTime {
   /// Get how many months ago a passed date is as a [int]
   ///
   /// Note: rounded down if not an integer, so 50 days -> 1 month
-  int get monthsAgo => clock.now().difference(this).inDays ~/ 30;
+  int get monthsAgo {
+    final now = clock.now();
+
+    int months = (now.year - year) * 12 + (now.month - month);
+
+    if (now.day < day) months -= 1;
+
+    return months < 0 ? 0 : months;
+  }
 
   /// Get how many years ago a passed date is as a [int]
   ///
   /// Note: rounded down if not an integer, so 400 days -> 1 year
-  int get yearsAgo => clock.now().difference(this).inDays ~/ 365;
+  int get yearsAgo => (monthsAgo / 12).truncate();
 
   /// Get how many minutes, hours, days, months or years ago a passed date is
+  ///
+  /// Returns seconds if less than 60 seconds ago.
   ///
   /// Returns minutes if less than 60 minutes ago.
   ///
@@ -45,25 +58,61 @@ extension DateTimeExtension on DateTime {
   /// Returns years if it is more than 12 months ago
   TimeAgo get timeAgo {
     if (secondsAgo < 60) {
-      return TimeAgo(timeUnit: TimeUnit.seconds, value: secondsAgo);
+      return TimeAgo(
+        amountTimeUnit: TimeUnit.seconds,
+        amount: secondsAgo,
+        remainder: millisecondsAgo % 1000,
+        remainderTimeUnit: TimeUnit.milliseconds,
+      );
     }
 
     if (minutesAgo < 60) {
-      return TimeAgo(timeUnit: TimeUnit.minutes, value: minutesAgo);
+      return TimeAgo(
+        amountTimeUnit: TimeUnit.minutes,
+        amount: minutesAgo,
+        remainder: secondsAgo % 60,
+        remainderTimeUnit: TimeUnit.seconds,
+      );
     }
 
     if (hoursAgo < 24) {
-      return TimeAgo(timeUnit: TimeUnit.hours, value: hoursAgo);
+      return TimeAgo(
+        amountTimeUnit: TimeUnit.hours,
+        amount: hoursAgo,
+        remainder: minutesAgo % 60,
+        remainderTimeUnit: TimeUnit.minutes,
+      );
     }
 
     if (daysAgo < 30) {
-      return TimeAgo(timeUnit: TimeUnit.days, value: daysAgo);
+      return TimeAgo(
+        amountTimeUnit: TimeUnit.days,
+        amount: daysAgo,
+        remainder: hoursAgo % 24,
+        remainderTimeUnit: TimeUnit.hours,
+      );
     }
 
     if (monthsAgo < 12) {
-      return TimeAgo(timeUnit: TimeUnit.months, value: monthsAgo);
+      final nowMonthsAgo = clock.now().copyWith(
+        month: clock.now().month - monthsAgo,
+      );
+
+      final daysDifference = nowMonthsAgo.difference(this).inDays;
+
+      return TimeAgo(
+        amountTimeUnit: TimeUnit.months,
+        amount: monthsAgo,
+        remainder: daysDifference,
+        remainderTimeUnit: TimeUnit.days,
+      );
     }
 
-    return TimeAgo(timeUnit: TimeUnit.years, value: yearsAgo);
+    return TimeAgo(
+      amountTimeUnit: TimeUnit.years,
+      amount: yearsAgo,
+      remainder: monthsAgo % 12,
+      remainderTimeUnit: TimeUnit.months,
+    );
   }
 }

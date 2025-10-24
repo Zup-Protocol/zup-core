@@ -1,5 +1,6 @@
 /// Represents different time units such as minutes, hours, days, months or years
 enum TimeUnit {
+  milliseconds,
   seconds,
   minutes,
   hours,
@@ -24,4 +25,7 @@ enum TimeUnit {
 
   /// Return whether if the [TimeUnit] is [TimeUnit.years]
   bool get isYears => this == TimeUnit.years;
+
+  /// Return whether if the [TimeUnit] is [TimeUnit.milliseconds]
+  bool get isMilliseconds => this == TimeUnit.milliseconds;
 }

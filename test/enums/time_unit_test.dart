@@ -3,6 +3,20 @@ import 'package:zup_core/enums/time_unit.dart';
 
 void main() {
   test(
+    "When calling 'isMilliseconds' with a time unit of milliseconds, it should return true",
+    () {
+      expect(TimeUnit.milliseconds.isMilliseconds, true);
+    },
+  );
+
+  test(
+    "When calling 'isMilliseconds' with a time unit that is not milliseconds, it should return false",
+    () {
+      expect(TimeUnit.seconds.isMilliseconds, false);
+    },
+  );
+
+  test(
     "When calling 'isSeconds' with a time unit of seconds, it should return true",
     () {
       expect(TimeUnit.seconds.isSeconds, true);
