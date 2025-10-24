@@ -1,6 +1,4 @@
-import 'dart:ui';
-
-import 'package:flutter_test/flutter_test.dart';
+part of '../test_utils.dart';
 
 extension WidgetTesterExtension on WidgetTester {
   /// Simulates a mouse hovering the passed [find] (or widget) on the screen.
